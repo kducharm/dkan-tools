@@ -14,6 +14,7 @@ services:
       - memcached
       - solr
     volumes:
+      - "${DKTL_PROJECT_DIRECTORY}:/var/www/"
       # PHP configuration overrides
       - "${DKTL_DIRECTORY}/assets/docker/etc/php5/php.ini:/etc/php5/fpm/conf.d/z_php.ini"
       - "${DKTL_DIRECTORY}/assets/docker/etc/php5/xdebug-linux.ini:/etc/php5/xdebug-linux.ini"
@@ -66,6 +67,7 @@ services:
     ports:
       - "8888"
     volumes:
+      - "${DKTL_PROJECT_DIRECTORY}:/var/www/"
       # Load the DKAN tools dir
       - "${DKTL_DIRECTORY}/:/usr/local/dkan-tools"
       # Host SSH keys mapping. Uncomment one of the lines below based on your setup.
