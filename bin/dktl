@@ -130,7 +130,8 @@ if [ "$DKTL_MODE" = "DOCKER" ]; then
 
   # Proxy pass to internal DKTL
   $BASE_DOCKER_COMPOSE_COMMAND exec $EXEC_OPTS cli env DRUPAL_VERSION=$DRUPAL_VERSION dktl $1 "${@:2}"
-
+  exit
+  
   if [ -z $DKTL_CHOWN ] || [ "$DKTL_CHOWN" = "TRUE" ]; then
     # Docker creates files that appear as owned by root on host. Fix:
     if [ ! -z `find $DKTL_PROJECT_DIRECTORY -user root -print -quit` ]; then
@@ -145,6 +146,7 @@ if [ "$DKTL_MODE" = "HOST" ]; then
   if [ "$1" = "drush" ] || [ "$1" = "test:behat" ] || [ "$1" = "test:phpunit" ] || [ "$1" = "test:lint" ] || [ "$1" = "test:lint-fix" ]; then
     # For several commands, we want to insert a "--" to pass all arguments as an array.
     php $DKTL_DIRECTORY/bin/app.php $1 -- "${@:2}"
+    exit
   else
     # Check whether dkan-tools' dependencies have been initialized.
     VENDOR="$(ls -lha $DKTL_DIRECTORY | grep vendor)"
@@ -153,5 +155,6 @@ if [ "$DKTL_MODE" = "HOST" ]; then
       composer install --working-dir=$DKTL_DIRECTORY
     fi
     php $DKTL_DIRECTORY/bin/app.php $1 "${@:2}"
+    exit
   fi
 fi
